@@ -1,135 +1,65 @@
-# kubejojo
+<div align="center">
 
-面向企业内部运维场景的 Kubernetes 单集群管理控制台。
+# 船长 K8s · Captain Kube
 
-`kubejojo` 不是一个只看资源列表的 Demo。它把集群总览、资源拓扑、工作负载排障、YAML 运维、RBAC 资源、版本更新与回滚放在同一套控制台里，适合用于企业内部单集群的日常巡检、问题定位和轻量运维。
+一个给运维用的 Kubernetes 单集群管理台：看全局、查问题、改配置，都在一个页面里。
 
-![kubejojo 集群总览](docs/assets/readme/overview.jpg)
+简体中文 · [English](README.en.md)
 
-## 核心亮点
+</div>
 
-| 能力 | 说明 |
-| --- | --- |
-| 单集群增强控制台 | 面向一个真实 Kubernetes 集群，避免多集群产品常见的重配置和重心分散。 |
-| ServiceAccount Token 接入 | 使用 Kubernetes 原生身份与 RBAC，不自建第二套用户权限系统。 |
-| 运维视角的信息架构 | 左侧按集群、拓扑、工作负载、网络、存储、安全、配置、资源治理、系统管理分组。 |
-| 真实资源拓扑 | 从真实集群资源关系生成拓扑，支持命名空间切换、来源筛选、分组视图和异常标记。 |
-| 排障入口集中 | Pod 详情内聚合状态、事件、日志、YAML、关联资源和 Web Terminal。 |
-| YAML 读写与常见动作 | 支持多数资源的 YAML 查看、编辑、创建、删除，以及工作负载 scale、restart、suspend 等操作。 |
-| 单二进制交付 | Release 模式下前端静态资源内嵌到 Go 后端二进制，由一个服务统一交付。 |
-| 在线更新闭环 | 支持基于 GitHub Releases 的版本检查、安装、回滚和服务重启。 |
+![集群总览](docs/assets/readme/overview.jpg)
 
-## 产品预览
+## 这是什么
 
-### 资源拓扑
+管一个 Kubernetes 集群，平时要在 kubectl、各种面板和日志工具之间来回切：先看哪里红了，再找是哪个 Pod，翻事件、看日志、进容器，最后改 YAML。船长 K8s 把这一串放到了一起。
 
-Topology 页面把工作负载、网络和存储资源放到同一个关系视图里，用异常标记帮助快速定位风险点。
+- 打开就是集群全貌，资源之间的关系画成拓扑图，出问题的地方直接标出来。
+- 点进一个 Pod，状态、事件、日志、YAML、关联资源和终端都在同一页，不用换工具。
+- 大多数资源都能直接看、改、建、删 YAML，常用的扩缩容、重启、暂停一键就行。
+- 用集群自己的 ServiceAccount Token 登录，权限跟着 RBAC 走，不另搞一套账号。
+- 发布时前端打进后端，一个二进制就能跑；还能在页面里检查新版本、升级和回滚。
 
-![资源拓扑动图演示](docs/assets/readme/topology-demo.gif)
+它只管一个集群，不做多集群。
 
-### 工作负载与详情
+> 以前叫 kubejojo。程序名、环境变量现在还沿用 `kubejojo`，后面的版本会统一改名。
 
-工作负载页面保留高密度列表、命名空间上下文、健康状态和资源指标。进入详情后可以继续查看匹配的 Pod、事件、日志、YAML 和关联资源。
+## 看一眼
 
-| Pod 列表 | Deployment 详情 |
-| --- | --- |
-| ![Pod 列表](docs/assets/readme/pods.jpg) | ![Deployment 详情](docs/assets/readme/deployment-detail.jpg) |
+<table>
+<tr>
+<td width="50%"><img src="docs/assets/readme/topology-demo.gif" alt="资源拓扑"><br><sub>资源拓扑：工作负载、网络、存储画在一张关系图里，异常直接标红</sub></td>
+<td width="50%"><img src="docs/assets/readme/pod-debug-demo.gif" alt="Pod 排障"><br><sub>Pod 排障：日志、事件、终端在同一条路径上</sub></td>
+</tr>
+<tr>
+<td><img src="docs/assets/readme/pods.jpg" alt="Pod 列表"><br><sub>Pod 列表：命名空间、健康状态、资源用量一眼看全</sub></td>
+<td><img src="docs/assets/readme/deployment-detail.jpg" alt="Deployment 详情"><br><sub>Deployment 详情：匹配的 Pod、事件和常用操作</sub></td>
+</tr>
+<tr>
+<td><img src="docs/assets/readme/serviceaccounts.jpg" alt="ServiceAccounts"><br><sub>权限：按 ServiceAccount、Role、Binding 查看和编辑</sub></td>
+<td><img src="docs/assets/readme/system-updates.jpg" alt="更新管理"><br><sub>更新管理：检查新版本、安装、回滚、重启服务</sub></td>
+</tr>
+</table>
 
-### Pod 排障
+## 装起来
 
-Pod 详情页把日志、状态、事件和终端放在同一条排障路径里，避免在多个工具之间来回切换。
-
-![Pod 排障动图演示](docs/assets/readme/pod-debug-demo.gif)
-
-| 日志查看 | 交互式终端 |
-| --- | --- |
-| ![Pod 日志](docs/assets/readme/pod-logs.jpg) | ![Pod 终端](docs/assets/readme/pod-terminal.jpg) |
-
-### 安全与系统管理
-
-RBAC 资源可以按 ServiceAccount、Role、ClusterRole、Binding 维度查看和编辑。系统管理页提供版本状态、远端发布检测、安装、回滚和重启入口。
-
-| ServiceAccounts | 更新管理 |
-| --- | --- |
-| ![ServiceAccounts](docs/assets/readme/serviceaccounts.jpg) | ![更新管理](docs/assets/readme/system-updates.jpg) |
-
-## 功能范围
-
-当前产品定位是 `单集群增强版`，覆盖以下资源域：
-
-- 集群：`Overview`、`Namespaces`、`Nodes`
-- 资源全景图：`Topology`
-- 工作负载：`Pods`、`Deployments`、`StatefulSets`、`DaemonSets`、`ReplicaSets`、`Jobs`、`CronJobs`
-- 网络管理：`Services`、`Endpoints`、`Ingresses`、`IngressClasses`、`NetworkPolicies`
-- 存储管理：`PersistentVolumeClaims`、`PersistentVolumes`、`StorageClasses`
-- 安全管理：`ServiceAccounts`、`Roles`、`ClusterRoles`、`RoleBindings`、`ClusterRoleBindings`
-- 配置管理：`ConfigMaps`、`Secrets`
-- 资源管理：`HPAs`、`VPAs`、`ResourceQuotas`、`LimitRanges`
-- 系统管理：版本检查、更新安装、回滚、服务重启
-
-当前已落地主线：
-
-- 登录页、演示模式与全局导航
-- 集群总览、命名空间、节点列表与详情
-- 工作负载、网络、存储、安全、配置、资源治理的大部分列表页与详情页
-- 多数资源的 YAML 查看与编辑
-- 常见资源删除与部分 YAML 创建
-- Pod 事件、日志、`describe`、Web Terminal
-- 工作负载 `scale`、`restart`、`suspend`
-- 基于 GitHub Releases 的在线更新、回滚和重启
-
-更细的产品边界见 [产品方案与需求基线](docs/产品方案与需求基线.md)。
-
-## 技术栈
-
-- 前端：`React 19`、`TypeScript`、`Vite`、`Ant Design`、`Ant Design Pro Components`、`TanStack Query`、`Zustand`、`Axios`、`Tailwind CSS`
-- 后端：`Go`、`Gin`、`client-go`
-- 实时能力：`WebSocket` 用于 Pod Exec Terminal
-- 交付方式：
-  - `source`：前后端分离开发，前端由 Vite 提供
-  - `release`：前端生产资源内嵌进后端二进制，由单一服务统一交付
-
-## 快速启动
-
-### 后端
+开发时前后端分开跑。后端需要 Go，前端需要 Node.js。
 
 ```bash
+# 后端，默认 http://127.0.0.1:8080
 cd server
-export KUBEJOJO_KUBECONFIG=/path/to/your/dev-kubeconfig
+export KUBEJOJO_KUBECONFIG=/path/to/your/kubeconfig
 go run ./cmd/kubejojo
-```
 
-默认监听：
-
-- 后端：`http://127.0.0.1:8080`
-
-后端会按以下顺序读取集群配置：
-
-1. `KUBEJOJO_KUBECONFIG`
-2. `KUBECONFIG`
-3. `~/.kube/config`
-
-### 前端
-
-```bash
+# 前端，默认 http://127.0.0.1:5174，会把 /api 转给后端
 cd web
 npm install
 npm run dev
 ```
 
-默认访问：
+后端按 `KUBEJOJO_KUBECONFIG`、`KUBECONFIG`、`~/.kube/config` 的顺序找集群配置。登录真实集群要输入 ServiceAccount Token；只想看看界面，可以用演示模式。
 
-- 前端：`http://127.0.0.1:5174`
-
-说明：
-
-- 前端开发代理会将 `/api` 请求转发到后端。
-- 登录真实集群时需要输入 `ServiceAccount Bearer Token`。
-- 只想查看页面骨架时，可以使用演示模式。
-
-## ServiceAccount Token 示例
-
-实验环境可以用下面的方式快速创建管理员 Token：
+实验环境可以这样拿一个管理员 Token（正式环境请按最小权限绑定，别直接用 `cluster-admin`）：
 
 ```bash
 kubectl create serviceaccount kubejojo-dev -n kube-system
@@ -139,104 +69,45 @@ kubectl create clusterrolebinding kubejojo-dev \
 kubectl create token kubejojo-dev -n kube-system
 ```
 
-正式环境建议按最小权限原则绑定 `Role` 或 `ClusterRole`，不要直接使用 `cluster-admin`。
-
-## Release 构建
-
-构建当前平台 release：
+正式部署用发布版：到 [Releases](https://github.com/heihuzi-labs/captain-kube/releases) 下载对应平台的包（Linux amd64/arm64、macOS arm64），里面是一个内嵌了前端的二进制和一个 systemd 服务文件。也可以自己打包：
 
 ```bash
-./scripts/build-release.sh
+./scripts/build-release.sh                              # 当前平台
+GOOS=linux GOARCH=arm64 ./scripts/build-release.sh      # 指定平台
 ```
 
-构建指定平台 release：
+产物在 `server/dist/release/`。
 
-```bash
-GOOS=linux GOARCH=arm64 ./scripts/build-release.sh
-```
+## 在线更新
 
-常见可选参数：
+打开在线更新后，系统管理页里能检查新版本、安装、回滚和重启服务。
 
-```bash
-VERSION=0.1.1 GOOS=linux GOARCH=amd64 ./scripts/build-release.sh
-NPM_INSTALL_MODE=ci GOOS=linux GOARCH=amd64 ./scripts/build-release.sh
-SKIP_NPM_INSTALL=1 ./scripts/build-release.sh
-```
-
-构建完成后输出位于：
-
-- `server/dist/release/`
-
-release 产物包含：
-
-- 版本化 `tar.gz`
-- `checksums.txt`
-- 内嵌前端静态资源的 `kubejojo` 二进制
-- `kubejojo.service`
-- `latest` 软链接
-
-查看二进制版本：
-
-```bash
-./server/dist/release/<package-dir>/kubejojo --version
-```
-
-## 在线更新配置
-
-启用在线更新相关环境变量：
-
-```bash
-KUBEJOJO_UPDATE_ENABLED=true
-KUBEJOJO_UPDATE_ALLOW_PRERELEASES=true
-KUBEJOJO_UPDATE_REPOSITORY=heihuzicity-tech/kubejojo
-KUBEJOJO_UPDATE_ALLOWED_SUBJECTS=system:serviceaccount:kube-system:kubejojo-dev
-KUBEJOJO_UPDATE_GITHUB_TOKEN=<optional-github-token>
-KUBEJOJO_UPDATE_TARGET_PATH=<optional-installed-binary-path>
-```
-
-配置说明：
-
-| 环境变量 | 说明 |
+| 环境变量 | 作用 |
 | --- | --- |
-| `KUBEJOJO_UPDATE_ENABLED` | 是否启用在线更新入口。 |
-| `KUBEJOJO_UPDATE_ALLOW_PRERELEASES` | 是否允许检测和安装 `rc`、`beta`、`alpha` 预发布版本。 |
-| `KUBEJOJO_UPDATE_REPOSITORY` | GitHub Releases 仓库，默认 `heihuzicity-tech/kubejojo`。 |
-| `KUBEJOJO_UPDATE_ALLOWED_SUBJECTS` | 允许执行更新、回滚、重启的 Kubernetes 身份白名单，逗号分隔。 |
-| `KUBEJOJO_UPDATE_GITHUB_TOKEN` | 可选，用于提升 GitHub API 访问稳定性和速率限制配额。 |
-| `KUBEJOJO_UPDATE_TARGET_PATH` | 可选，显式指定受管二进制路径，便于 release 模式下准确执行更新和回滚。 |
+| `KUBEJOJO_UPDATE_ENABLED` | 打开在线更新入口 |
+| `KUBEJOJO_UPDATE_REPOSITORY` | 从哪个仓库的 Releases 取新版本，默认 `heihuzicity-tech/kubejojo`（已自动跳转到本仓库） |
+| `KUBEJOJO_UPDATE_ALLOWED_SUBJECTS` | 谁能执行更新、回滚、重启，填 Kubernetes 身份，逗号分隔 |
+| `KUBEJOJO_UPDATE_ALLOW_PRERELEASES` | 要不要检测 rc、beta 这类预发布版本 |
+| `KUBEJOJO_UPDATE_GITHUB_TOKEN` | 可选，访问 GitHub 接口更稳、限流更宽 |
+| `KUBEJOJO_UPDATE_TARGET_PATH` | 可选，指定被管理的二进制路径 |
 
-## GitHub Release
-
-仓库可通过 `v*` tag 触发 GitHub Release。
-
-- `CI`
-  - 执行前端安装与生产构建
-  - 执行后端 `go test ./...`
-  - 执行一次 Linux release 打包校验
-- `Release`
-  - 通过 `v*` tag 触发
-  - 默认产出 `linux/amd64`、`linux/arm64`、`darwin/arm64`
-  - 自动汇总 `checksums.txt`
-  - 自动发布 GitHub Release
-
-推荐发布方式：
-
-```bash
-git tag v0.1.1
-git push origin v0.1.1
-```
-
-## 项目结构
+## 开发
 
 ```text
-kubejojo
-├── docs/                 # 产品边界、操作指南和 README 截图素材
-├── scripts/              # release 构建脚本
-├── server/               # Go 后端、Kubernetes client、更新服务、静态资源嵌入
-└── web/                  # React 前端控制台
+server/   Go 后端：client-go、更新服务、内嵌前端
+web/      React 前端：Ant Design、TanStack Query
+scripts/  发布打包脚本
+docs/     产品边界、操作指南、README 截图
 ```
 
-## 文档
+打 `v*` 标签会触发发布：跑前端构建和后端 `go test ./...`，产出三个平台的包和 `checksums.txt`，自动发 GitHub Release。
 
-- [产品方案与需求基线](docs/产品方案与需求基线.md)
-- [开发与实验集群操作指南](docs/operation-guide.md)
+完整的功能范围见 [产品方案与需求基线](docs/产品方案与需求基线.md)，本地实验集群的操作见 [开发与实验集群操作指南](docs/operation-guide.md)。
+
+## 许可证
+
+[MIT](LICENSE)。Kubernetes 是 Linux 基金会的商标，本项目与其没有关联。
+
+---
+
+<sub>船长系列，来自 [heihuzi-labs](https://github.com/heihuzi-labs)：[船长派活](https://github.com/heihuzi-labs/captain-crew) · **船长 K8s** · [船长运维](https://github.com/heihuzi-labs/captain-ops) · [船长待办](https://github.com/heihuzi-labs/captain-todo)</sub>
