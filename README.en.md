@@ -110,4 +110,4 @@ The full scope is in the [product baseline](docs/产品方案与需求基线.md)
 
 ---
 
-<sub>Part of the Captain series from [heihuzi-labs](https://github.com/heihuzi-labs): [Captain Crew](https://github.com/heihuzi-labs/captain-crew) · **Captain Kube** · [Captain Ops](https://github.com/heihuzi-labs/captain-ops) · [Captain Todo](https://github.com/heihuzi-labs/captain-todo)</sub>
+<sub>Part of the Captain series from [heihuzi-labs](https://github.com/heihuzi-labs): [Captain Agents](https://github.com/heihuzi-labs/captain-agents) · **Captain Kube** · [Captain Ops](https://github.com/heihuzi-labs/captain-ops) · [Captain Todo](https://github.com/heihuzi-labs/captain-todo)</sub>

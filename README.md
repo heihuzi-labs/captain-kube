@@ -110,4 +110,4 @@ docs/     产品边界、操作指南、README 截图
 
 ---
 
-<sub>船长系列，来自 [heihuzi-labs](https://github.com/heihuzi-labs)：[船长派活](https://github.com/heihuzi-labs/captain-crew) · **船长 K8s** · [船长运维](https://github.com/heihuzi-labs/captain-ops) · [船长待办](https://github.com/heihuzi-labs/captain-todo)</sub>
+<sub>船长系列，来自 [heihuzi-labs](https://github.com/heihuzi-labs)：[船长派活](https://github.com/heihuzi-labs/captain-agents) · **船长 K8s** · [船长运维](https://github.com/heihuzi-labs/captain-ops) · [船长待办](https://github.com/heihuzi-labs/captain-todo)</sub>
